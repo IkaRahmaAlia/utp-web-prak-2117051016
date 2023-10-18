@@ -42,8 +42,17 @@
                     <label for="fname">Kelas</label>
                 </div>
                 <div class="col-75">
-                    <input type="text" id ="kelas" placeholder="Kelas">
-                    </input>
+                    <select name="kelas"  id ="kelas" placeholder="Kelas">
+                        <?php
+                        foreach ($kelas as $item){
+                            ?>
+                            <option value ="<?= $item['id'] ?>">
+                                <?= $item ['nama_kelas'] ?>
+                        </option>
+                        <?php
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
 
