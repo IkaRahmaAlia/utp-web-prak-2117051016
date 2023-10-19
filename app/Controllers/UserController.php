@@ -68,7 +68,7 @@ class UserController extends BaseController
         return view('create_user', $data);
     }
 
-     public function store(){
+    public function store(){
             //vidio
         if (!$this->validate([
             'nama' => [
@@ -89,13 +89,21 @@ class UserController extends BaseController
             return redirect()->to(base_url('/user/create'))->withInput()->with('validation', $validation);
         }
 
+        $path = 'assets/uploads/img/';
+        $foto = $this->request->getFile('foto');
+        $name = $foto->getRandomName();
+
+        if ($foto->move($path, $name)){
+            $foto = base_url($path . $name);
+        }
+
         $userModel = new userModel();
 
         $userModel->saveUser([
             'nama' => $this ->request->getVar('nama'),
             'id_kelas' => $this ->request->getVar('kelas'),
             'npm' => $this ->request->getVar('npm'),
-
+            'foto' => $foto
         ]);
 
         $data = [
@@ -107,6 +115,17 @@ class UserController extends BaseController
         // return view('profile', $data);
         return redirect()->to('/user');
 
+    }
+
+    public function show($id){
+        $user = $this->userModel->getUser($id);
+
+        $data=[
+            'title' => 'profile',
+            'user' => $user,
+        ];
+
+        return view ('profile', $data);
     }
 
 }
