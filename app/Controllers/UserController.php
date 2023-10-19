@@ -3,19 +3,34 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\KelasModel;
 use App\Models\UserModel;
-// use App\Models\KelasModel;
+
 
 class UserController extends BaseController
 {
+    public $userModel;
+    public $kelasModel;
+
+    public function __construct()
+    {
+        $this-> userModel = new UserModel();
+        $this->kelasModel = new KelasModel();
+    }
+
     public function index()
     {
-        //
+        $data = [
+            'title' => 'List User',
+            'users' => $this ->userModel->getUser(),
+        ];
+        return view ('list_user', $data);
     }
     
     public function profile($nama="", $kelas="", $npm="")
     {
         $data = [
+            'title' => 'profile',
             'nama' => 'Ika Rahma Alia',
             'kelas' => 'C',
             'npm' =>  '2117051016'
@@ -24,26 +39,29 @@ class UserController extends BaseController
     }
 
     public function create(){
-        $kelas = [
-            [
-                'id'=>1,
-                'nama_kelas'=>'A'
-            ],
-            [
-                'id'=>2,
-                'nama_kelas'=>'B'
-            ],
-            [
-                'id'=>3,
-                'nama_kelas'=>'C'
-            ],
-            [
-                'id'=>4,
-                'nama_kelas'=>'D'
-            ],
-        ];
+        // $kelas = [
+        //     [
+        //         'id'=>1,
+        //         'nama_kelas'=>'A'
+        //     ],
+        //     [
+        //         'id'=>2,
+        //         'nama_kelas'=>'B'
+        //     ],
+        //     [
+        //         'id'=>3,
+        //         'nama_kelas'=>'C'
+        //     ],
+        //     [
+        //         'id'=>4,
+        //         'nama_kelas'=>'D'
+        //     ],
+        // ];
 
+        $kelas = $this->kelasModel->getKelas();
+        
         $data =[
+            'title' => 'Create User',
             'kelas' => $kelas,
         ];
 
@@ -86,7 +104,8 @@ class UserController extends BaseController
             'npm' => $this -> request->getVar('npm'),
             
         ];
-        return view('profile', $data);
+        // return view('profile', $data);
+        return redirect()->to('/user');
 
     }
 
