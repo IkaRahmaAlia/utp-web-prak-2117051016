@@ -14,6 +14,17 @@ $routes->get('/user/profile', [UserController::class,'profile']);
 $routes->get('/user/create', [UserController::class,'create']);
 $routes->post('/user/store', [UserController::class, 'store']);
 
+//list user
 $routes->get('/user', [UserController::class, 'index']);
+
+//edit
+$routes->get('user/(:any)/edit', [UserController::class, 'edit']);
+
+//update
+$routes->put('user/(:any)', [UserController::class, 'update']);
+
+//delete
+$routes->delete('user/(:any)', [UserController::class, 'destroy']);
+
 //menampilkan detail
 $routes->get('user/(:any)', [UserController::class, 'show']);
