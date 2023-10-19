@@ -49,12 +49,13 @@
                 </div>
             </div>
 
+            <label> Choose the File to upload: </label>
+            <input type="file" id="foto" name="foto" /> <br /><br />
             <br>
             <div class="row">
                 <input type="submit" value="Simpan">
             </div>
         </form>
-
     </div>
 
 <?=$this->endSection() ?>
