@@ -3,9 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\KelasModel;
 use App\Models\UserModel;
-
+use App\Models\KelasModel;
 
 class UserController extends BaseController
 {
@@ -17,7 +16,6 @@ class UserController extends BaseController
         $this-> userModel = new UserModel();
         $this->kelasModel = new KelasModel();
     }
-
     public function index()
     {
         $data = [
@@ -26,17 +24,18 @@ class UserController extends BaseController
         ];
         return view ('list_user', $data);
     }
-    
-    public function profile($nama="", $kelas="", $npm="")
+
+    public function profile($nama = "", $kelas = "", $npm = "")
     {
         $data = [
-            'title' => 'profile',
-            'nama' => 'Ika Rahma Alia',
-            'kelas' => 'C',
-            'npm' =>  '2117051016'
+            'nama' => $nama,
+            'kelas' => $kelas,
+            'npm' => $npm,
+            
         ];
         return view('profile', $data);
     }
+
 
     public function create(){
         // $kelas = [
@@ -59,16 +58,17 @@ class UserController extends BaseController
         // ];
 
         $kelas = $this->kelasModel->getKelas();
-        
-        $data =[
+        $data=[
             'title' => 'Create User',
-            'kelas' => $kelas,
+            'kelas' =>$kelas,
+            //vidio
+            'validation' => \Config\Services::validation()
         ];
-
         return view('create_user', $data);
     }
 
-    public function store(){
+    public function store()
+    {
             //vidio
         if (!$this->validate([
             'nama' => [
@@ -88,9 +88,10 @@ class UserController extends BaseController
             $validation = \Config\Services::validation();
             return redirect()->to(base_url('/user/create'))->withInput()->with('validation', $validation);
         }
-
         $path = 'assets/uploads/img/';
+
         $foto = $this->request->getFile('foto');
+
         $name = $foto->getRandomName();
 
         if ($foto->move($path, $name)){
@@ -104,6 +105,7 @@ class UserController extends BaseController
             'id_kelas' => $this ->request->getVar('kelas'),
             'npm' => $this ->request->getVar('npm'),
             'foto' => $foto
+
         ]);
 
         $data = [
@@ -113,8 +115,63 @@ class UserController extends BaseController
             
         ];
         // return view('profile', $data);
-        return redirect()->to('/user');
 
+        return redirect()->to('/user');
+    }
+
+    public function edit($id){
+        $user = $this->userModel->getUser($id);
+        $kelas = $this->kelasModel->getKelas();
+
+        $data = [
+            'title' => 'Edit User',
+            'user' => $user,
+            'kelas' => $kelas,
+        ];
+
+        return view('edit_user', $data);
+    }
+
+    public function update($id){
+        $path = 'assets/upload/img/';
+        $foto = $this->request->getFile('foto');
+
+        $data = [
+            'nama' => $this->request->getVar('nama'),
+            'id_kelas' => $this->request->getVar('kelas'),
+            'npm' => $this->request->getVar('npm'),
+        ];
+
+        if ($foto->isValid()){
+            $name = $foto->getRandomName();
+
+            if ($foto->move($path, $name)){
+                $foto_path = base_url($path . $name);
+
+                $data['foto'] = $foto_path;
+            }
+        }
+
+        $result = $this->userModel->updateUser($data, $id);
+
+        if(!$result){
+            return redirect()->back()->withInput()
+            ->with('error', 'Gagal menyimpan data');
+        }
+
+        return redirect()->to(base_url('/user'));
+    }
+
+
+    public function destroy($id){
+        $result = $this->userModel->deleteUser($id);
+        if (!$result){
+            return redirect()->back()->with('error', 'Gagal menghapus data');
+
+        }
+
+        return redirect()->to(base_url('/user'))
+        ->with('success', 'Berhasil menghapus data');
     }
 
     public function show($id){
