@@ -1,6 +1,16 @@
 <?= $this -> extend('layouts/app') ?>
 <?= $this -> section('content') ?>
 
+<!-- Navbar -->
+<div class="sidenav" >
+  <a href="#">UTP Web</a>
+  <a href="<?= base_url('/user') ?>">User</a>
+  <a href="<?= base_url('/kelas') ?>">Kelas</a>
+</div>
+<br>
+<br>
+
+<div class="main">
     <br>
     <div class="container">
         <form action="<?=base_url('user/store')?>" method="post" enctype="multipart/form-data">
@@ -57,5 +67,5 @@
             </div>
         </form>
     </div>
-
+</div>
 <?=$this->endSection() ?>
