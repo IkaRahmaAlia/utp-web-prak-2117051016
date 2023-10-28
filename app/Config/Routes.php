@@ -28,3 +28,18 @@ $routes->delete('user/(:any)', [UserController::class, 'destroy']);
 
 //menampilkan detail
 $routes->get('user/(:any)', [UserController::class, 'show']);
+
+
+//list kelas
+$routes->get('/kelas', 'KelasController::index');
+//create
+$routes->get('/kelas/create', 'KelasController::create');
+$routes->post('/kelas/store', 'KelasController::store');
+
+//edit
+$routes->get('kelas/(:any)/edit', 'KelasController::edit/$1');
+$routes->put('kelas/(:any)', 'KelasController::update/$1');
+//hapus
+$routes->delete('kelas/(:any)', 'KelasController::destroy/$1');
+
+$routes->get('kelas/(:any)', [KelasController::class, 'show']);

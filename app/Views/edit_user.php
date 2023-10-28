@@ -1,7 +1,16 @@
 <?= $this -> extend('layouts/app') ?>
 <?= $this -> section('content') ?>
 
+<!-- Navbar -->
+<div class="sidenav" >
+  <a href="#">UTP Web</a>
+  <a href="<?= base_url('/user') ?>">User</a>
+  <a href="<?= base_url('/kelas') ?>">Kelas</a>
+</div>
+<br>
     <br>
+
+<div class="main">
     <div class="container">
         <form action="<?=base_url('user/' . $user['id'])?>" method="post" enctype="multipart/form-data">
             <input type="hidden" name= "_method" value="PUT">
@@ -63,5 +72,5 @@
 
         </form>
     </div>
-
+</div>
 <?=$this->endSection() ?>
